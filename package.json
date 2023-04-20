@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "MERN Stack Chat App",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon backend/server.js"
   },
   "author": "Ritik Sharma",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  }
 }
