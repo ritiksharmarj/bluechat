@@ -1,7 +1,16 @@
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ChatPage from './pages/ChatPage';
+
 import './App.css';
 
-function App() {
-  return <h1 className='text-3xl font-bold underline'>Hello world!</h1>;
-}
+const App = () => (
+  <>
+    <Routes>
+      <Route path='/' element={<HomePage />}></Route>
+      <Route path='/chats' element={<ChatPage />}></Route>
+    </Routes>
+  </>
+);
 
 export default App;
