@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 const ChatPage = () => {
   useEffect(() => {
     const fetchChats = async () => {
-      const data = await axios.get('/api/chat/');
+      const { data } = await axios.get('http://localhost:5000/api/chat');
       console.log(data);
     };
     fetchChats();

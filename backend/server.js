@@ -1,9 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { chats } from './data/data.js';
 
 const app = express();
 dotenv.config();
+
+// Enable CORS for all routes
+app.use(cors());
 
 // respond with 'Wahoo' when a GET request is made to the homepage
 app.get('/', (req, res) => {
@@ -24,4 +28,4 @@ app.get('/api/chat/:id', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, console.log(`Server running successfully on ${PORT}`));
+app.listen(PORT, console.log(`Server started 🖐`));
