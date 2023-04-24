@@ -41,7 +41,7 @@ const SignupPage = () => {
           </div>
         </aside>
 
-        <main className='bg-stone-50 w-full h-screen p-4 py-10 sm:p-20 flex flex-col justify-center items-center flex-1 overflow-y-scroll'>
+        <main className='bg-stone-50 w-full h-screen p-4 py-10 sm:p-20 flex flex-col justify-between items-center flex-1 overflow-y-scroll'>
           {<Signup />}
         </main>
       </section>

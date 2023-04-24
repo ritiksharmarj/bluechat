@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 const Signup = () => {
   return (
     <>
-      <div className='w-full sm:w-[400px] border border-gray-300 rounded-lg p-4 sm:p-10 shadow-lg bg-white'>
+      <div className='flex-1'></div>
+
+      <div className='w-full sm:w-[400px] flex-1 border border-gray-300 rounded-lg p-4 sm:p-10 shadow-lg bg-white'>
         <div className='flex justify-center mb-2 xl:hidden'>
           <Link to='/'>
             <img
@@ -90,7 +92,7 @@ const Signup = () => {
         </form>
       </div>
 
-      <div className='mt-12'>
+      <div className='mt-12 flex-1'>
         <p className='text-sm text-gray-600 text-center'>
           Already have an account?
           <Link to='/login' className='font-semibold ml-1'>
