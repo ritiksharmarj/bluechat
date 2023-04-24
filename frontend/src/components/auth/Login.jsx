@@ -1,6 +1,18 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Eye, EyeClosed } from '@phosphor-icons/react';
 
 const Login = () => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [show, setShow] = useState(false);
+
+  // Password visibility handler
+  const passwordShowHandler = () => setShow(!show);
+
+  // Form Submit Handler
+  const submitHandler = () => {};
+
   return (
     <>
       <div className='flex-1'></div>
@@ -28,21 +40,22 @@ const Login = () => {
         </div>
 
         <form className='space-y-4' action='#'>
+          {/* Email address */}
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium'>
-              Email address
+              Email Address
             </label>
             <input
               type='email'
-              name='email'
               id='email'
+              onChange={(e) => setEmail(e.target.value)}
               className='bg-gray-50 border-0 text-sm rounded-lg block w-full p-2.5 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 outline-none'
               placeholder='name@company.com'
               required
-              autoComplete='email'
             />
           </div>
 
+          {/* Password */}
           <div>
             <label
               htmlFor='password'
@@ -50,20 +63,30 @@ const Login = () => {
             >
               Password
             </label>
-            <input
-              type='password'
-              name='password'
-              id='password'
-              className='bg-gray-50 border-0 text-sm rounded-lg block w-full p-2.5 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 outline-none'
-              placeholder='••••••••'
-              required
-              autoComplete='current-password'
-            />
+            <div className='relative flex items-center'>
+              <input
+                type={show ? 'text' : 'password'}
+                id='password'
+                onChange={(e) => setPassword(e.target.value)}
+                className='bg-gray-50 border-0 text-sm rounded-lg block w-full p-2.5 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 outline-none'
+                placeholder='••••••••'
+                required
+              />
+              <button
+                type='button'
+                aria-label='view-password'
+                onClick={passwordShowHandler}
+                className='absolute right-0 px-2.5 cursor-pointer text-gray-600 hover:text-gray-900'
+              >
+                {show ? <Eye /> : <EyeClosed />}
+              </button>
+            </div>
           </div>
 
           <div>
             <button
               type='submit'
+              onClick={submitHandler}
               className='flex w-full justify-center rounded-lg bg-indigo-600 p-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 outline-none'
             >
               Log In

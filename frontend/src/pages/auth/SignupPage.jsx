@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Signup from '../../components/auth/Signup';
 import logo from '../../assets/bluechat-logo-black.svg';
+import onboardingBg from '../../assets/onboarding-bg.webp';
 
 const SignupPage = () => {
   return (
@@ -9,8 +10,7 @@ const SignupPage = () => {
         <aside
           className='h-screen p-20 hidden xl:block xl:w-[600px]'
           style={{
-            backgroundImage:
-              'url(https://dqy38fnwh4fqs.cloudfront.net/website/onboarding-bg.webp)',
+            backgroundImage: `url(${onboardingBg})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
