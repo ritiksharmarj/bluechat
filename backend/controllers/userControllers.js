@@ -4,7 +4,7 @@ import generateToken from '../config/generateToken.js';
 
 /**
  * @description - Register new user
- * @route - POST /api/user
+ * @route - POST /api/user/signup
  * @access - Public
  */
 export const registerUser = asyncHandler(async (req, res) => {
@@ -44,4 +44,13 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Failed to create the user.');
   }
+});
+
+/**
+ * @description - Auth the user
+ * @route - POST /api/users/login
+ * @access - Public
+ */
+export const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 });

@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { chats } from './data/data.js';
 import connectDB from './config/database.js';
 import userRoutes from './routes/userRoutes.js';
 
@@ -11,6 +10,9 @@ connectDB(); // MongoDB connection
 
 // Enable CORS for all routes
 app.use(cors());
+
+// To accept JSON data
+app.use(express.json());
 
 // respond with 'Wahoo' when a GET request is made to the homepage
 app.get('/', (req, res) => {
