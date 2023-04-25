@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { User } from '../models/userModel.js';
+import generateToken from '../config/generateToken.js';
 
 /**
  * @description - Register new user
@@ -33,7 +34,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   if (newUser) {
     res.status(201).json({
-      _id: newUser.id,
+      _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
       avatar: newUser.avatar,
