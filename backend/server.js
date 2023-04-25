@@ -2,9 +2,11 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { chats } from './data/data.js';
+import connectDB from './config/database.js';
 
 const app = express();
 dotenv.config();
+connectDB(); // MongoDB connection
 
 // Enable CORS for all routes
 app.use(cors());
