@@ -3,7 +3,7 @@ import { User } from '../models/userModel.js';
 import generateToken from '../config/generateToken.js';
 
 /**
- * @description - Register new user
+ * @description - Register new user (Signup)
  * @route - POST /api/user/signup
  * @access - Public
  */
@@ -47,10 +47,27 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 /**
- * @description - Auth the user
+ * @description - Auth the user (Login)
  * @route - POST /api/users/login
  * @access - Public
  */
 export const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  // 1. Check if user already exists in our database or not
+  const user = await User.findOne({ email });
+
+  // 2. If user exists and entered password matches the user's password with our database
+  if (user && (await user.matchPassword(password))) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error('Invalid email or password.');
+  }
 });
