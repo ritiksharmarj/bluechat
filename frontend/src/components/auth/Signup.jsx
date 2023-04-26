@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from '@phosphor-icons/react';
 import { Toaster } from 'react-hot-toast';
 import { animateSpin, toastMessage } from '../Craft';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -10,22 +12,20 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [avatar, setAvatar] = useState();
   const [show, setShow] = useState(false);
-  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Password visibility handler
   const passwordShowHandler = () => setShow(!show);
 
-  // Form Submit Handler
-  const submitHandler = () => {};
-
   // Uploading the avatar
   const postDetails = (selectedAvatar) => {
-    setAvatarLoading(true);
+    setLoading(true);
 
     // If user don't select avatar
     if (selectedAvatar === undefined) {
-      toastMessage('Please select an image');
-      setAvatarLoading(false);
+      toastMessage('Please select an image', '🙏');
+      setLoading(false);
       return;
     }
 
@@ -46,16 +46,58 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data) => {
           setAvatar(data.url.toString());
-          setAvatarLoading(false);
+          setLoading(false);
         })
         .catch((error) => {
-          setAvatarLoading(false);
+          setLoading(false);
           throw error;
         });
     } else {
-      toastMessage('Please select jpg, jpeg or png!');
-      setAvatarLoading(false);
+      toastMessage('Please select jpg, jpeg or png!', '🙏');
+      setLoading(false);
       return;
+    }
+  };
+
+  // Form Submit Handler
+  const submitHandler = async () => {
+    setLoading(true);
+
+    // If any of the fields don't have value
+    if (!name || !email || !password) {
+      toastMessage('Please fill all the fields!', '🙏');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        '/api/user/signup',
+        {
+          name,
+          email,
+          password,
+          avatar,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+      console.log(data);
+
+      toastMessage('Registration Successful', '😎');
+
+      // Store data to local storage for later use
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      setLoading(false);
+
+      // Redirect to "chats" page
+      navigate('/chats');
+    } catch (error) {
+      toastMessage('Error Occured!', '🤯');
+      throw error;
     }
   };
 
@@ -153,11 +195,11 @@ const Signup = () => {
           <div>
             <button
               type='submit'
-              disabled={avatarLoading}
+              disabled={loading}
               onClick={submitHandler}
               className='flex w-full justify-center rounded-lg bg-indigo-600 p-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500'
             >
-              {avatarLoading ? animateSpin() : 'Join Bluechat'}
+              {loading ? animateSpin() : 'Join Bluechat'}
             </button>
             <Toaster />
           </div>

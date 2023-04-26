@@ -21,9 +21,9 @@ export const animateSpin = () => {
   );
 };
 
-export const toastMessage = (message) => {
+export const toastMessage = (message, icon) => {
   return toast(message, {
-    icon: '🙏',
+    icon: { icon },
     style: {
       borderRadius: '8px',
       background: '#333',
