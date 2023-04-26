@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from '@phosphor-icons/react';
 import { Toaster } from 'react-hot-toast';
-import { animateSpin, toastMessage } from '../Craft';
+import { animateSpin, toastCustom } from '../Craft';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { WarningCircle, CheckCircle, XCircle } from '@phosphor-icons/react';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -24,7 +25,12 @@ const Signup = () => {
 
     // If user don't select avatar
     if (selectedAvatar === undefined) {
-      toastMessage('Please select an image', '🙏');
+      toastCustom(
+        'Please select an image',
+        <WarningCircle size={24} />,
+        '#4f46e5',
+        '#eef2ff'
+      );
       setLoading(false);
       return;
     }
@@ -53,7 +59,12 @@ const Signup = () => {
           throw error;
         });
     } else {
-      toastMessage('Please select jpg, jpeg or png!', '🙏');
+      toastCustom(
+        'Please select jpg, jpeg or png!',
+        <WarningCircle size={24} />,
+        '#4f46e5',
+        '#eef2ff'
+      );
       setLoading(false);
       return;
     }
@@ -65,14 +76,19 @@ const Signup = () => {
 
     // If any of the fields don't have value
     if (!name || !email || !password) {
-      toastMessage('Please fill all the fields!', '🙏');
+      toastCustom(
+        'Please fill all the fields!',
+        <WarningCircle size={24} />,
+        '#4f46e5',
+        '#eef2ff'
+      );
       setLoading(false);
       return;
     }
 
     try {
       const { data } = await axios.post(
-        '/api/user/signup',
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/signup`,
         {
           name,
           email,
@@ -85,9 +101,13 @@ const Signup = () => {
           },
         }
       );
-      console.log(data);
 
-      toastMessage('Registration Successful', '😎');
+      toastCustom(
+        'Registration Successful',
+        <CheckCircle size={24} />,
+        '#16a34a',
+        '#f0fdf4'
+      );
 
       // Store data to local storage for later use
       localStorage.setItem('userInfo', JSON.stringify(data));
@@ -96,7 +116,13 @@ const Signup = () => {
       // Redirect to "chats" page
       navigate('/chats');
     } catch (error) {
-      toastMessage('Error Occured!', '🤯');
+      toastCustom(
+        'Error Occured!',
+        <XCircle size={24} />,
+        '#dc2626',
+        '#fef2f2'
+      );
+      setLoading(false);
       throw error;
     }
   };
@@ -185,7 +211,7 @@ const Signup = () => {
             <input
               type='file'
               id='avatar'
-              accept='image/png, image/jpeg, image/jpg'
+              accept='image/png, image/jpg, image/jpeg'
               onChange={(e) => postDetails(e.target.files[0])}
               className='bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full outline-none file:bg-indigo-50 file:hover:bg-indigo-100 file:text-indigo-600 file:p-2.5 file:border-0 file:mr-3 cursor-pointer'
             />

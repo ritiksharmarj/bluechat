@@ -21,13 +21,13 @@ export const animateSpin = () => {
   );
 };
 
-export const toastMessage = (message, icon) => {
+export const toastCustom = (message, icon, textColor, bgColor) => {
   return toast(message, {
-    icon: { icon },
+    icon: icon,
     style: {
       borderRadius: '8px',
-      background: '#333',
-      color: '#fff',
+      background: bgColor,
+      color: textColor,
       fontWeight: 'normal',
     },
   });
