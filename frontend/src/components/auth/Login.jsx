@@ -1,17 +1,80 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeClosed } from '@phosphor-icons/react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Eye,
+  EyeClosed,
+  WarningCircle,
+  CheckCircle,
+  XCircle,
+} from '@phosphor-icons/react';
+import { animateSpin, toastCustom } from '../Craft';
+import axios from 'axios';
+import { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Password visibility handler
   const passwordShowHandler = () => setShow(!show);
 
   // Form Submit Handler
-  const submitHandler = () => {};
+  const submitHandler = async () => {
+    setLoading(true);
+
+    // If any of the fields don't have value
+    if (!email || !password) {
+      toastCustom(
+        'Please fill all the fields!',
+        <WarningCircle size={24} />,
+        '#4f46e5',
+        '#eef2ff'
+      );
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+
+      toastCustom(
+        'Login Successful.',
+        <CheckCircle size={24} />,
+        '#16a34a',
+        '#f0fdf4'
+      );
+
+      // Store data to local storage for later use
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      setLoading(false);
+
+      // Redirect to "chats" page
+      navigate('/chats');
+    } catch (error) {
+      toastCustom(
+        'Error Occured!',
+        <XCircle size={24} />,
+        '#dc2626',
+        '#fef2f2'
+      );
+      setLoading(false);
+      throw error;
+    }
+  };
 
   return (
     <>
@@ -33,13 +96,19 @@ const Login = () => {
         </h2>
 
         <div className='my-6'>
-          <button className='flex w-full justify-center rounded-lg bg-indigo-50 p-2.5 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-100 outline-none'>
+          <button
+            onClick={() => {
+              setEmail('guest@example.com');
+              setPassword('123456');
+            }}
+            className='flex w-full justify-center rounded-lg bg-indigo-50 p-2.5 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-100 outline-none'
+          >
             Login as Guest
           </button>
           <p className='text-center my-4 text-gray-600'>or</p>
         </div>
 
-        <form className='space-y-4' action='#'>
+        <form className='space-y-4'>
           {/* Email address */}
           <div>
             <label htmlFor='email' className='block mb-2 text-sm font-medium'>
@@ -48,6 +117,7 @@ const Login = () => {
             <input
               type='email'
               id='email'
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               className='bg-gray-50 border-0 text-sm rounded-lg block w-full p-2.5 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 outline-none'
               placeholder='name@company.com'
@@ -67,6 +137,7 @@ const Login = () => {
               <input
                 type={show ? 'text' : 'password'}
                 id='password'
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className='bg-gray-50 border-0 text-sm rounded-lg block w-full p-2.5 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 outline-none'
                 placeholder='••••••••'
@@ -83,13 +154,15 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Login Button */}
           <div>
             <button
               type='submit'
+              disabled={loading}
               onClick={submitHandler}
               className='flex w-full justify-center rounded-lg bg-indigo-600 p-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 outline-none'
             >
-              Log In
+              {loading ? animateSpin() : 'Log In'}
             </button>
           </div>
         </form>
@@ -103,6 +176,8 @@ const Login = () => {
           </Link>
         </p>
       </div>
+
+      <Toaster />
     </>
   );
 };

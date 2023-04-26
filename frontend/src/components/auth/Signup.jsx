@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeClosed } from '@phosphor-icons/react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Eye,
+  EyeClosed,
+  WarningCircle,
+  CheckCircle,
+  XCircle,
+} from '@phosphor-icons/react';
 import { Toaster } from 'react-hot-toast';
 import { animateSpin, toastCustom } from '../Craft';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { WarningCircle, CheckCircle, XCircle } from '@phosphor-icons/react';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -103,7 +107,7 @@ const Signup = () => {
       );
 
       toastCustom(
-        'Registration Successful',
+        'Registration Successful.',
         <CheckCircle size={24} />,
         '#16a34a',
         '#f0fdf4'
@@ -227,7 +231,6 @@ const Signup = () => {
             >
               {loading ? animateSpin() : 'Join Bluechat'}
             </button>
-            <Toaster />
           </div>
         </form>
       </div>
@@ -240,6 +243,8 @@ const Signup = () => {
           </Link>
         </p>
       </div>
+
+      <Toaster />
     </>
   );
 };
