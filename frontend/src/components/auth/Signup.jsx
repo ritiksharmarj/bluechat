@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from '@phosphor-icons/react';
-import toast, { Toaster } from 'react-hot-toast';
-import { animateSpin } from '../Animate';
+import { Toaster } from 'react-hot-toast';
+import { animateSpin, toastMessage } from '../Craft';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -24,17 +24,8 @@ const Signup = () => {
 
     // If user don't select avatar
     if (selectedAvatar === undefined) {
-      toast('Please select an image', {
-        icon: '🙏',
-        style: {
-          borderRadius: '8px',
-          background: '#333',
-          color: '#fff',
-          fontWeight: 'normal',
-        },
-      });
+      toastMessage('Please select an image');
       setAvatarLoading(false);
-      // console.log('Please select an image!');
       return;
     }
 
@@ -47,7 +38,7 @@ const Signup = () => {
       const formData = new FormData();
       formData.append('file', selectedAvatar);
       formData.append('upload_preset', 'bluechat');
-      // formData.append('cloud_name', 'devritik');
+
       fetch(import.meta.env.VITE_CLOUDINARY_API_BASE_IMAGE_UPLOAD_URL, {
         method: 'POST',
         body: formData,
@@ -55,7 +46,6 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data) => {
           setAvatar(data.url.toString());
-          // console.log(data.url.toString());
           setAvatarLoading(false);
         })
         .catch((error) => {
@@ -63,16 +53,7 @@ const Signup = () => {
           throw error;
         });
     } else {
-      toast('Please select jpg, jpeg or png!', {
-        icon: '🙏',
-        style: {
-          borderRadius: '8px',
-          background: '#333',
-          color: '#fff',
-          fontWeight: 'normal',
-        },
-      });
-      // console.log('Please select jpg, jpeg or png!');
+      toastMessage('Please select jpg, jpeg or png!');
       setAvatarLoading(false);
       return;
     }
@@ -95,7 +76,7 @@ const Signup = () => {
         </div>
         <h2 className='text-xl font-medium text-center mb-8'>Join Bluechat</h2>
 
-        <form className='space-y-4' action='#'>
+        <form className='space-y-4'>
           {/* Full Name */}
           <div>
             <label htmlFor='name' className='block mb-2 text-sm font-medium'>

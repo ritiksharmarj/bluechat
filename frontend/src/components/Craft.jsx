@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast';
+
 export const animateSpin = () => {
   return (
     <svg
@@ -17,4 +19,16 @@ export const animateSpin = () => {
       />
     </svg>
   );
+};
+
+export const toastMessage = (message) => {
+  return toast(message, {
+    icon: '🙏',
+    style: {
+      borderRadius: '8px',
+      background: '#333',
+      color: '#fff',
+      fontWeight: 'normal',
+    },
+  });
 };
