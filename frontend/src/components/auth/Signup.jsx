@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from '@phosphor-icons/react';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -8,12 +9,49 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [avatar, setAvatar] = useState();
   const [show, setShow] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
 
   // Password visibility handler
   const passwordShowHandler = () => setShow(!show);
 
   // Form Submit Handler
   const submitHandler = () => {};
+
+  // Uploading the avatar
+  const postDetails = (selectedAvatar) => {
+    setAvatarLoading(true);
+
+    // If user don't select avatar
+    if (selectedAvatar === undefined) {
+      toast.error('Please select an image!');
+      return;
+    }
+
+    // If user select avatar (png, jpeg, jpg)
+    if (
+      selectedAvatar.type === 'image/png' ||
+      selectedAvatar.type === 'image/jpeg' ||
+      selectedAvatar.type === 'image/jpg'
+    ) {
+      const formData = new FormData();
+      formData.append('file', selectedAvatar);
+      formData.append('upload_preset', 'bluechat');
+      // formData.append('cloud_name', 'devritik');
+      fetch('https://api.cloudinary.com/v1_1/devritik/image/upload', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setAvatar(data.url.toString());
+          setAvatarLoading(false);
+        })
+        .catch((error) => {
+          setAvatarLoading(false);
+          throw error;
+        });
+    }
+  };
 
   return (
     <>
@@ -103,7 +141,8 @@ const Signup = () => {
               type='file'
               id='file_input'
               accept='image/png, image/jpeg, image/jpg'
-              className='bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full outline-none file:bg-indigo-50 file:hover:bg-indigo-100 file:text-indigo-600 file:p-2.5 file:border-0 file:mr-3'
+              onChange={(e) => postDetails(e.target.files[0])}
+              className='bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full outline-none file:bg-indigo-50 file:hover:bg-indigo-100 file:text-indigo-600 file:p-2.5 file:border-0 file:mr-3 cursor-pointer'
             />
           </div>
 
