@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from '@phosphor-icons/react';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { animateSpin } from '../Animate';
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -23,11 +24,21 @@ const Signup = () => {
 
     // If user don't select avatar
     if (selectedAvatar === undefined) {
-      toast.error('Please select an image!');
+      toast('Please select an image', {
+        icon: '🙏',
+        style: {
+          borderRadius: '8px',
+          background: '#333',
+          color: '#fff',
+          fontWeight: 'normal',
+        },
+      });
+      setAvatarLoading(false);
+      // console.log('Please select an image!');
       return;
     }
 
-    // If user select avatar (png, jpeg, jpg)
+    // If user select avatar (png, jpeg, jpg) upload it to cloudinary
     if (
       selectedAvatar.type === 'image/png' ||
       selectedAvatar.type === 'image/jpeg' ||
@@ -37,19 +48,33 @@ const Signup = () => {
       formData.append('file', selectedAvatar);
       formData.append('upload_preset', 'bluechat');
       // formData.append('cloud_name', 'devritik');
-      fetch('https://api.cloudinary.com/v1_1/devritik/image/upload', {
+      fetch(import.meta.env.VITE_CLOUDINARY_API_BASE_IMAGE_UPLOAD_URL, {
         method: 'POST',
         body: formData,
       })
         .then((res) => res.json())
         .then((data) => {
           setAvatar(data.url.toString());
+          // console.log(data.url.toString());
           setAvatarLoading(false);
         })
         .catch((error) => {
           setAvatarLoading(false);
           throw error;
         });
+    } else {
+      toast('Please select jpg, jpeg or png!', {
+        icon: '🙏',
+        style: {
+          borderRadius: '8px',
+          background: '#333',
+          color: '#fff',
+          fontWeight: 'normal',
+        },
+      });
+      // console.log('Please select jpg, jpeg or png!');
+      setAvatarLoading(false);
+      return;
     }
   };
 
@@ -131,15 +156,12 @@ const Signup = () => {
 
           {/* Upload Avatar */}
           <div>
-            <label
-              htmlFor='file_input'
-              className='block mb-2 text-sm font-medium'
-            >
+            <label htmlFor='avatar' className='block mb-2 text-sm font-medium'>
               Upload Avatar
             </label>
             <input
               type='file'
-              id='file_input'
+              id='avatar'
               accept='image/png, image/jpeg, image/jpg'
               onChange={(e) => postDetails(e.target.files[0])}
               className='bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full outline-none file:bg-indigo-50 file:hover:bg-indigo-100 file:text-indigo-600 file:p-2.5 file:border-0 file:mr-3 cursor-pointer'
@@ -150,11 +172,13 @@ const Signup = () => {
           <div>
             <button
               type='submit'
+              disabled={avatarLoading}
               onClick={submitHandler}
               className='flex w-full justify-center rounded-lg bg-indigo-600 p-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500'
             >
-              Join Bluechat
+              {avatarLoading ? animateSpin() : 'Join Bluechat'}
             </button>
+            <Toaster />
           </div>
         </form>
       </div>
