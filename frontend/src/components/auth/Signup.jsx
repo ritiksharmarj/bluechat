@@ -7,7 +7,6 @@ import {
   CheckCircle,
   XCircle,
 } from '@phosphor-icons/react';
-import { Toaster } from 'react-hot-toast';
 import { animateSpin, toastCustom } from '../Craft';
 import axios from 'axios';
 
@@ -243,8 +242,6 @@ const Signup = () => {
           </Link>
         </p>
       </div>
-
-      <Toaster />
     </>
   );
 };

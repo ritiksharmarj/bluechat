@@ -9,7 +9,6 @@ import {
 } from '@phosphor-icons/react';
 import { animateSpin, toastCustom } from '../Craft';
 import axios from 'axios';
-import { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -66,7 +65,7 @@ const Login = () => {
       navigate('/chats');
     } catch (error) {
       toastCustom(
-        'Error Occured!',
+        'Incorrect email or password!',
         <XCircle size={24} />,
         '#dc2626',
         '#fef2f2'
@@ -176,8 +175,6 @@ const Login = () => {
           </Link>
         </p>
       </div>
-
-      <Toaster />
     </>
   );
 };
