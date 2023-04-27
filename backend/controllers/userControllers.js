@@ -71,3 +71,24 @@ export const authUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid email or password.');
   }
 });
+
+/**
+ * @description - Get or Search all users
+ * @route - GET /api/user?search=
+ * @access - Public
+ */
+export const allUsers = asyncHandler(async (req, res) => {
+  // If there is any query, search the user with their name or email
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: 'i' } },
+          { email: { $regex: req.query.search, $options: 'i' } },
+        ],
+      }
+    : {};
+
+  // Find all other users except the current user
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.send(users);
+});
