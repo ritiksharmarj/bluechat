@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/database.js';
 import userRoutes from './routes/userRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
 const app = express();
@@ -15,13 +16,8 @@ app.use(cors());
 // To accept JSON data
 app.use(express.json());
 
-// respond with 'Wahoo' when a GET request is made to the homepage
-app.get('/', (req, res) => {
-  res.send('Wahoo 🖐');
-});
-
-// Auth (Signup, Login)
 app.use('/api/user', userRoutes);
+app.use('/api/chat', chatRoutes);
 
 //////////////////////////////
 // Error Handling middlewares
