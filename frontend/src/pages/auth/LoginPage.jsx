@@ -1,9 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Login from '../../components/auth/Login';
 import logo from '../../assets/bluechat-logo-black.svg';
 import onboardingBg from '../../assets/onboarding-bg.webp';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    // If user is logged in, redirect to chats page
+    if (userInfo) navigate('/chats');
+  }, [navigate]);
+
   return (
     <>
       <section className='flex w-full'>
