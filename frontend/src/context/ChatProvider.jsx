@@ -16,7 +16,8 @@ const ChatProvider = ({ children }) => {
     setUser(userInfo);
 
     // If user is not logged in, redirect to login page
-    if (!userInfo) navigate('/login');
+    // if (!userInfo) navigate('/');
+    if (!userInfo) return;
   }, [navigate]);
 
   return (
