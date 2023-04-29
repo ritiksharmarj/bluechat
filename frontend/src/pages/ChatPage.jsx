@@ -8,12 +8,10 @@ const ChatPage = () => {
 
   return (
     <>
-      <div>
+      <div id='chat-container' className='h-screen w-full bg-white'>
         {user && <ChatHeader />}
-        <div>
-          {user && <UsersContainer />}
-          {user && <Conversation />}
-        </div>
+        {user && <UsersContainer />}
+        {user && <Conversation />}
       </div>
     </>
   );

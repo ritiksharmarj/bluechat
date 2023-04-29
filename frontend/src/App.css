@@ -1,0 +1,5 @@
+#chat-container {
+  display: grid;
+  grid-template-rows: [row1-start] max-content [row1-end] auto [last-row];
+  grid-template-columns: [col1-start] 350px [col1-end] auto [last-col];
+}
