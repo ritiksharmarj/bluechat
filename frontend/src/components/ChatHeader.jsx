@@ -2,8 +2,11 @@ import { MagnifyingGlass, Bell } from '@phosphor-icons/react';
 import logo from '../assets/bluechat-logo-black.svg';
 import { Link } from 'react-router-dom';
 import SearchUserModal from './miscellaneous/SearchUserModal';
+import { useState } from 'react';
 
 const ChatHeader = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div
       id='chat-header'
@@ -12,11 +15,14 @@ const ChatHeader = () => {
       {/* Search user modal */}
       <div className='flex items-center justify-between'>
         <div className='w-60'>
-          <button className='flex items-center gap-2 rounded-lg bg-indigo-50 p-2.5 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-100 outline-none'>
+          <button
+            onClick={() => setShowModal(true)}
+            className='flex items-center gap-2 rounded-lg bg-indigo-50 p-2.5 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-100 outline-none'
+          >
             {<MagnifyingGlass size={20} />} <span>Search User</span>
           </button>
 
-          <SearchUserModal />
+          <SearchUserModal showModal={showModal} setShowModal={setShowModal} />
         </div>
 
         {/* Logo */}
